@@ -18,11 +18,28 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+SECRETS = {
+    'SECRET_KEY': None,
+    'DEBUG': None,
+    'DB_PASS': None,
+    'DB_NAME': None,
+    'DB_USER': None,
+    'DB_HOST': None,
+}
+
+# Set environment variables for Travis Cl tests
+for secret in SECRETS.keys():
+    try:
+        SECRETS[secret] = os.environ[secret]
+    except KeyError:
+        SECRETS[secret] = 'travis'
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = SECRETS['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG = SECRETS['DEBUG']
 
 ALLOWED_HOSTS = []
 
@@ -75,10 +92,10 @@ WSGI_APPLICATION = 'budget_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': os.environ['DB_HOST'],
+        'NAME': SECRETS['DB_NAME'],
+        'USER': SECRETS['DB_USER'],
+        'PASSWORD': SECRETS['DB_PASS'],
+        'HOST': SECRETS['DB_HOST'],
         'PORT': 5432,
     }
 }
