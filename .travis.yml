@@ -11,9 +11,4 @@ script:
     - docker-compose run web sh -c "python manage.py test && flake8"
 
 env:
-    - DB_NAME=travis
-    - DB_USER=travis
-    - DB_HOST=db
-    - DB_PASS=travis
-    - SECRET_KEY=travis
-    - DEBUG=True
+    - DB_NAME=travis DB_USER=travis DB_HOST=db DB_PASS=travis SECRET_KEY=travis DEBUG=True
