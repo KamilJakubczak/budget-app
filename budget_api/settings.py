@@ -34,7 +34,7 @@ for secret in SECRETS.keys():
     except KeyError:
         SECRETS[secret] = 'travis'
 
-
+print(SECRETS['SECRET_KEY'])
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = SECRETS['SECRET_KEY']
 
