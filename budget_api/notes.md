@@ -1,5 +1,5 @@
 # NOTES
 ## 1. SUPERUSERS - DEV
-login: root
+login: user
 
 password: admin
