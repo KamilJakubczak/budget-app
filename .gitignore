@@ -155,6 +155,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# NeoVim
+.idea/
 © 2020 GitHub, Inc.
 Terms
 Privacy
