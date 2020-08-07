@@ -9,7 +9,8 @@ app_name = 'api'
 router = DefaultRouter()
 router.register('categories', apiView.CategoryViewSet)
 router.register('tags', apiView.TagViewSet)
-# router.register('test', views.test)
+router.register('payment', apiView.PaymentViewSet)
+router.register('transactions', apiView.TransactionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

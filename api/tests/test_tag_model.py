@@ -1,12 +1,35 @@
 from django.test import TestCase
-from api.models import Tag
+from django.urls import reverse
 from django.contrib.auth import get_user_model
+
+from rest_framework import status
 from rest_framework.test import APIClient
+
+from api.models import Tag
+
+TAG_URL = reverse('api:tag-list')
+
+
+class PublicTestCase(TestCase):
+    """
+    Test for publicy avaialable tag API
+    """
+
+    def setUp(self):
+
+        self.client = APIClient()
+
+    def test_login_required(self):
+        """
+        Tests if login is required for retriving tags
+        """
+
+        res = self.client.get(TAG_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class ModelTests(TestCase):
-
-
 
     def setUp(self):
 

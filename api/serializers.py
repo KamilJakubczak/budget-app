@@ -1,10 +1,11 @@
 from rest_framework import serializers
 
-from .models import Category, Tag
+from .models import Category, Tag, Transaction
+from .models import Payment, TransactionType
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    """Serizliazer for category object"""
+    """Serializer for category object"""
 
     class Meta:
         model = Category
@@ -13,9 +14,33 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-    """Serizliazer for tag object"""
+    """Serializer for tag object"""
 
     class Meta:
         model = Tag
         fields = ('id', 'name', 'parent_tag')
+        read_only_fields = ('id',)
+
+class PaymentSerializer(serializers.ModelSerializer):
+    """Serializer for Payment object"""
+
+    class Meta:
+        model = Payment
+        fields = '__all__'
+        read_only_fields = ('id',)
+
+class TransactionTypeSerializer(serializers.ModelSerializer):
+    """Serializer for transaction type object"""
+
+    class Meta:
+        model = TransactionType
+        fields = '__all__'
+        read_only_fields = ('id',)
+
+class TransactionSerializer(serializers.ModelSerializer):
+    """Serializer for Transaction object"""
+
+    class Meta:
+        model = Transaction
+        fields = '__all__'
         read_only_fields = ('id',)

@@ -72,21 +72,65 @@ class Tag(models.Model):
 
 class Payment(models.Model):
     """Model for payment method objects"""
-    payment_to = models.CharField(
+    payment = models.CharField(
         max_length=100,
-        blank=False,
         null=False)
-
-    payment_from = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True)
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
     def __str__(self):
-        if self.payment_from is None:
-            return self.payment_to
-        return self.payment_from + ' - ' + self.payment_to
+        return self.payment
+
+class TransactionType(models.Model):
+    """Model for transaction types"""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    transaction_type = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False)
+
+    def __str__(self):
+        return self.transaction_type
+
+class Transaction(models.Model):
+    """Model for transaction objects"""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    transaction_date = models.DateField(
+        null=False,
+        blank=False)
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE)
+
+    transaction_type = models.ForeignKey(
+        TransactionType,
+        on_delete=models.CASCADE)
+
+    payment_target = models.ForeignKey(
+        Payment,
+        related_name = 'payment_target',
+        on_delete=models.CASCADE)
+
+    payment_source = models.ForeignKey(
+        Payment,
+        related_name = 'payment_source',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
+
+    description = models.CharField(
+        max_length=500,
+        blank=True)
+
+
