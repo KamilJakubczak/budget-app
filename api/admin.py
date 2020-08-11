@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import Category, Tag, Payment, Transaction, TransactionType
+from .models import Category, Tag, Payment
+from .models import Transaction, TransactionType, PaymentInitial
 import datetime
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Payment)
+admin.site.register(PaymentInitial)
 admin.site.register(TransactionType)
 
 
@@ -22,4 +24,5 @@ class TransactionAdmin(admin.ModelAdmin):
         'description',
         'payment_target',
         'payment_source',
+        'amount',
         'transaction_type')

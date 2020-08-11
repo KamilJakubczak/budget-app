@@ -84,6 +84,27 @@ class Payment(models.Model):
         return self.payment
 
 
+class PaymentInitial(models.Model):
+    """Model of initial amount for payments' objects"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    payment = models.ForeignKey(
+        Payment,
+        on_delete=models.CASCADE
+    )
+
+    initial_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=False,
+        blank=False)
+
+    class Meta:
+        unique_together = ('user', 'payment')
+
+
 class TransactionType(models.Model):
     """Model for transaction types"""
 
@@ -98,6 +119,7 @@ class TransactionType(models.Model):
 
     def __str__(self):
         return self.transaction_type
+
 
 class Transaction(models.Model):
     """Model for transaction objects"""
@@ -120,12 +142,12 @@ class Transaction(models.Model):
 
     payment_target = models.ForeignKey(
         Payment,
-        related_name = 'payment_target',
+        related_name='payment_target',
         on_delete=models.CASCADE)
 
     payment_source = models.ForeignKey(
         Payment,
-        related_name = 'payment_source',
+        related_name='payment_source',
         on_delete=models.CASCADE,
         null=True,
         blank=True)
@@ -134,4 +156,8 @@ class Transaction(models.Model):
         max_length=500,
         blank=True)
 
-
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=False,
+        blank=False)
