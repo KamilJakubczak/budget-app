@@ -3,8 +3,8 @@ from django.conf import settings
 
 
 # Create your models here
-class Category(models.Model):
-    """Model for category"""
+class Tag(models.Model):
+    """Model for tag"""
 
     name = models.CharField(
         max_length=100,
@@ -24,14 +24,14 @@ class Category(models.Model):
         return self.user.username + ' - ' + self.name
 
 
-class Tag(models.Model):
-    """Model for tags"""
+class Category(models.Model):
+    """Model for Category"""
     name = models.CharField(
         max_length=100,
         blank=False,
         null=False)
 
-    parent_tag = models.ForeignKey(
+    parent_category = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
         blank=True,
@@ -45,29 +45,29 @@ class Tag(models.Model):
         name = (self.get_name(self))
         return str(name)
 
-    def get_name(self, tag_object, name=None):
+    def get_name(self, category_object, name=None):
 
         if name is None:
-            name = tag_object.name
-            if self.has_parent(tag_object):
-                return self.get_name(tag_object.parent_tag, name)
+            name = category_object.name
+            if self.has_parent(category_object):
+                return self.get_name(category_object.parent_category, name)
             else:
                 return name
-        elif not self.has_parent(tag_object):
-            name = self.create_string(name, tag_object)
+        elif not self.has_parent(category_object):
+            name = self.create_string(name, category_object)
             return name
         else:
-            name = self.create_string(name, tag_object)
-            return self.get_name(tag_object.parent_tag, name)
+            name = self.create_string(name, category_object)
+            return self.get_name(category_object.parent_category, name)
 
-    def has_parent(self, tag_object):
-        if tag_object.parent_tag is None:
+    def has_parent(self, category_object):
+        if category_object.parent_category is None:
             return False
         else:
             return True
 
-    def create_string(self, name, tag_object):
-        return tag_object.name + ' - ' + name
+    def create_string(self, name, category_object):
+        return category_object.name + ' - ' + name
 
 
 class Payment(models.Model):
@@ -82,6 +82,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment
+
 
 class TransactionType(models.Model):
     """Model for transaction types"""

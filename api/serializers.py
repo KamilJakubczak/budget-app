@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name')
+        fields = '__all__'
         read_only_fields = ('id',)
 
 
@@ -18,7 +18,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ('id', 'name', 'parent_tag')
+        fields = '__all__'
         read_only_fields = ('id',)
 
 class PaymentSerializer(serializers.ModelSerializer):
