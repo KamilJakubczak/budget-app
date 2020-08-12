@@ -15,5 +15,20 @@ router.register('transactions', apiView.TransactionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('token/', views.obtain_auth_token)
+    path('token/', views.obtain_auth_token),
+
+    path(
+        'paymentSum/',
+        apiView.PaymentSumView.as_view(),
+        name="paymentSum"),
+
+    path(
+        'categorySum/',
+        apiView.CategorySumView.as_view(),
+        name="categorySum"),
+
+    path(
+        'tagSum/',
+        apiView.TagSumView.as_view(),
+        name="tagSum"),
 ]

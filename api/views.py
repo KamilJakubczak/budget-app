@@ -1,13 +1,17 @@
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import CategorySerializer, TagSerializer
 from .serializers import PaymentSerializer, TransactionSerializer
-from .serializers import TransactionTypeSerializer, PaymentInitialSerializer
+from .serializers import TransactionTypeSerializer, PaymentInitialSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer
 from .models import Category, Tag, Transaction
 from .models import Payment, TransactionType, PaymentInitial
+
+from django.db.models import Sum
 
 
 class BaseViewSet(viewsets.GenericViewSet,
@@ -67,18 +71,6 @@ class PaymentInitialViewSet(BaseViewSet):
     serializer_class = PaymentInitialSerializer
     queryset = PaymentInitial.objects.all()
 
-    def get_queryset(self):
-        """Return object for the current authenticated user only"""
-        assigned_only = bool(
-            int(self.request.query_params.get('assigned_only', 0))
-        )
-        queryset = self.queryset
-
-        if assigned_only:
-            queryset = queryset.filter(payment__isnull=False)
-        return queryset.filter(
-            user=self.request.user)
-
 
 class TransactionTypeViewSet(BaseViewSet):
     """
@@ -100,12 +92,91 @@ class TransactionViewSet(BaseViewSet):
         queryset = super().get_queryset()
         query_params = self.request.query_params
 
-        if 'from_date' in query_params.keys():
-            from_date = (self.request.query_params['from_date'])
-            queryset = queryset.filter(transaction_date__gte=from_date)
+        query_data = QueryData(queryset, query_params)
+        filtered_data = query_data.queryset
 
-        if 'to_date' in query_params.keys():
-            to_date = (self.request.query_params['to_date'])
-            queryset = queryset.filter(transaction_date__lte=to_date)
+        return filtered_data
 
-        return queryset
+
+class PaymentSumView(APIView):
+    def get(self, requset):
+        queryset = Transaction.objects.values(
+            'payment_target').annotate(sum=Sum('amount'))
+
+        query_data = QueryData(
+            queryset,
+            self.request.query_params)
+
+        filtered_data = query_data.queryset
+        serializer = PaymentSumSerializer(filtered_data, many=True)
+        return Response(serializer.data)
+
+
+class CategorySumView(APIView):
+    def get(self, requset):
+
+        queryset = Transaction.objects.values(
+            'category__name').annotate(sum=Sum('amount'))
+
+        query_data = QueryData(
+            queryset,
+            self.request.query_params)
+
+        filtered_data = query_data.queryset
+        serializer = CategorySumSerializer(filtered_data, many=True)
+        return Response(serializer.data)
+
+
+class TagSumView(APIView):
+    def get(self, requset):
+
+        queryset = Transaction.objects.values(
+            'tag__name').annotate(sum=Sum('amount'))
+
+        query_data = QueryData(
+            queryset,
+            self.request.query_params)
+
+        filtered_data = query_data.queryset
+        serializer = TagSumSerializer(filtered_data, many=True)
+        return Response(serializer.data)
+
+
+"""
+HELPERS
+"""
+
+""" Class for filtering the queryset to provided date range"""
+
+
+class QueryData:
+
+    def __init__(self, queryset, query_params):
+        self.queryset = queryset
+        self.query_params = query_params
+
+        self.filter_from()
+        self.filter_to()
+
+    def has_key(self, key):
+        if key in self.query_params.keys():
+            return True
+        return False
+
+    def filter_from(self):
+
+        key = 'from_date'
+        if self.has_key(key):
+            print(True)
+            date = self.query_params[key]
+            print(date)
+            queryset = self.queryset.filter(transaction_date__gte=date)
+            self.queryset = queryset
+
+    def filter_to(self):
+
+        key = 'to_date'
+        if self.has_key(key):
+            date = self.query_params[key]
+            queryset = self.queryset.filter(transaction_date__lte=date)
+            self.queryset = queryset

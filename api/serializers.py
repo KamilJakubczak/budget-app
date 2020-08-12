@@ -10,7 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-        read_only_fields = ('id',)
+        # read_only_fields = ('id',)
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -56,3 +56,24 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = '__all__'
         read_only_fields = ('id',)
+
+
+class PaymentSumSerializer(serializers.Serializer):
+    payment_target = serializers.CharField(max_length=200)
+    sum = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+
+
+class CategorySumSerializer(serializers.Serializer):
+    category__name = serializers.CharField(max_length=200)
+    sum = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+
+
+class TagSumSerializer(serializers.Serializer):
+    tag__name = serializers.CharField(max_length=200)
+    sum = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2)

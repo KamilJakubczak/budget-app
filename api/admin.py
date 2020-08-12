@@ -29,6 +29,7 @@ class TransactionAdmin(admin.ModelAdmin):
         'user',
         'date',
         'category',
+        'tag',
         'description',
         'payment_target',
         'payment_source',
@@ -38,6 +39,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = (
         'transaction_date',
         'category',
+        'tag',
         'payment_target',
         'payment_source',
         'transaction_type',
