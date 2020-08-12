@@ -6,8 +6,16 @@ import datetime
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Payment)
-admin.site.register(PaymentInitial)
 admin.site.register(TransactionType)
+
+
+@admin.register(PaymentInitial)
+class PaymentIntialAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'payment',
+        'initial_amount'
+    )
 
 
 @admin.register(Transaction)
@@ -26,3 +34,12 @@ class TransactionAdmin(admin.ModelAdmin):
         'payment_source',
         'amount',
         'transaction_type')
+
+    list_filter = (
+        'transaction_date',
+        'category',
+        'payment_target',
+        'payment_source',
+        'transaction_type',
+        'amount'
+    )

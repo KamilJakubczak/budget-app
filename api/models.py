@@ -4,7 +4,6 @@ from django.conf import settings
 
 # Create your models here
 class Tag(models.Model):
-    """Model for tag"""
 
     name = models.CharField(
         max_length=100,
@@ -25,7 +24,6 @@ class Tag(models.Model):
 
 
 class Category(models.Model):
-    """Model for Category"""
     name = models.CharField(
         max_length=100,
         blank=False,
@@ -71,7 +69,6 @@ class Category(models.Model):
 
 
 class Payment(models.Model):
-    """Model for payment method objects"""
     payment = models.CharField(
         max_length=100,
         null=False)
@@ -85,7 +82,6 @@ class Payment(models.Model):
 
 
 class PaymentInitial(models.Model):
-    """Model of initial amount for payments' objects"""
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -106,7 +102,6 @@ class PaymentInitial(models.Model):
 
 
 class TransactionType(models.Model):
-    """Model for transaction types"""
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -122,7 +117,6 @@ class TransactionType(models.Model):
 
 
 class Transaction(models.Model):
-    """Model for transaction objects"""
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

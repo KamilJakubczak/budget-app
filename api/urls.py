@@ -10,6 +10,7 @@ router = DefaultRouter()
 router.register('categories', apiView.CategoryViewSet)
 router.register('tags', apiView.TagViewSet)
 router.register('payment', apiView.PaymentViewSet)
+router.register('payment-initial', apiView.PaymentInitialViewSet)
 router.register('transactions', apiView.TransactionViewSet)
 
 urlpatterns = [
