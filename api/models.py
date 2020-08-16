@@ -138,7 +138,8 @@ class Transaction(models.Model):
     tag = models.ForeignKey(
         Tag,
         on_delete=models.CASCADE,
-        null=True)
+        null=True,
+        blank=True)
 
     transaction_type = models.ForeignKey(
         TransactionType,
