@@ -14,7 +14,7 @@ class PaymentIntialAdmin(admin.ModelAdmin):
     list_display = (
         'user',
         'payment',
-        'initial_amount'
+        'amount'
     )
 
 

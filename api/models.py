@@ -77,6 +77,10 @@ class Payment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
+    initial_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+
     def __str__(self):
         return self.payment
 
@@ -88,10 +92,11 @@ class PaymentInitial(models.Model):
 
     payment = models.ForeignKey(
         Payment,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='payment_initial'
     )
 
-    initial_amount = models.DecimalField(
+    amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=False,

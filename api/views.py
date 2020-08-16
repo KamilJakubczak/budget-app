@@ -11,7 +11,7 @@ from .serializers import TransactionTypeSerializer, PaymentInitialSerializer, Pa
 from .models import Category, Tag, Transaction
 from .models import Payment, TransactionType, PaymentInitial
 
-from django.db.models import Sum
+from django.db.models import Sum, F, DecimalField
 
 
 class BaseViewSet(viewsets.GenericViewSet,
@@ -100,14 +100,26 @@ class TransactionViewSet(BaseViewSet):
 
 class PaymentSumView(APIView):
     def get(self, requset):
-        queryset = Transaction.objects.values(
-            'payment_target').annotate(sum=Sum('amount'))
+        # queryset = Transaction.objects.values(
+        #     'payment_target').annotate(sum=Sum('amount'))
 
+        # queryset = Transaction.objects.values(
+        #     'payment_target').annotate(
+        #         sum=Sum('payment_target__initial_amount')
+        #         + Sum('amount'))
+        queryset = Payment.objects.prefetch_related('transaction').annotate(
+            sum=Sum('initial_amount')
+            + Sum('payment_target'), output_field=DecimalField())
+
+        print(self.request.user)
         query_data = QueryData(
             queryset,
             self.request.query_params)
 
+        query_data.filter_user(self.request.user)
         filtered_data = query_data.queryset
+
+        print(queryset)
         serializer = PaymentSumSerializer(filtered_data, many=True)
         return Response(serializer.data)
 
@@ -180,3 +192,6 @@ class QueryData:
             date = self.query_params[key]
             queryset = self.queryset.filter(transaction_date__lte=date)
             self.queryset = queryset
+
+    def filter_user(self, user):
+        self.queryset = self.queryset.filter(user=user)
