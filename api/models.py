@@ -23,6 +23,38 @@ class Tag(models.Model):
         return self.user.username + ' - ' + self.name
 
 
+class Payment(models.Model):
+    payment = models.CharField(
+        max_length=100,
+        null=False)
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    initial_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2)
+
+    def __str__(self):
+        return self.payment
+
+
+class TransactionType(models.Model):
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+
+    transaction_type = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False)
+
+    def __str__(self):
+        return self.transaction_type
+
+
 class Category(models.Model):
     name = models.CharField(
         max_length=100,
@@ -38,6 +70,11 @@ class Category(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
+
+    transaction_type = models.ForeignKey(
+        TransactionType,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         name = (self.get_name(self))
@@ -68,23 +105,6 @@ class Category(models.Model):
         return category_object.name + ' - ' + name
 
 
-class Payment(models.Model):
-    payment = models.CharField(
-        max_length=100,
-        null=False)
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
-
-    initial_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2)
-
-    def __str__(self):
-        return self.payment
-
-
 class PaymentInitial(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -104,21 +124,6 @@ class PaymentInitial(models.Model):
 
     class Meta:
         unique_together = ('user', 'payment')
-
-
-class TransactionType(models.Model):
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
-
-    transaction_type = models.CharField(
-        max_length=100,
-        null=False,
-        blank=False)
-
-    def __str__(self):
-        return self.transaction_type
 
 
 class Transaction(models.Model):
@@ -148,7 +153,9 @@ class Transaction(models.Model):
     payment_target = models.ForeignKey(
         Payment,
         related_name='payment_target',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
 
     payment_source = models.ForeignKey(
         Payment,

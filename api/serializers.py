@@ -59,7 +59,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class PaymentSumSerializer(serializers.Serializer):
-    payment_target = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=200)
     sum = serializers.DecimalField(
         max_digits=10,
         decimal_places=2)

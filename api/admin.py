@@ -22,7 +22,6 @@ class PaymentIntialAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
 
     def date(self, date):
-        print(date.transaction_date)
         return date.transaction_date.strftime("%Y-%m-%d")
 
     list_display = (

@@ -12,6 +12,7 @@ from .models import Category, Tag, Transaction
 from .models import Payment, TransactionType, PaymentInitial
 
 from django.db.models import Sum, F, DecimalField
+from decimal import Decimal
 
 
 class BaseViewSet(viewsets.GenericViewSet,
@@ -99,19 +100,12 @@ class TransactionViewSet(BaseViewSet):
 
 
 class PaymentSumView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, requset):
-        # queryset = Transaction.objects.values(
-        #     'payment_target').annotate(sum=Sum('amount'))
 
-        # queryset = Transaction.objects.values(
-        #     'payment_target').annotate(
-        #         sum=Sum('payment_target__initial_amount')
-        #         + Sum('amount'))
-        queryset = Payment.objects.prefetch_related('transaction').annotate(
-            sum=Sum('initial_amount')
-            + Sum('payment_target'), output_field=DecimalField())
-
-        print(self.request.user)
+        queryset = Transaction.objects.all()
         query_data = QueryData(
             queryset,
             self.request.query_params)
@@ -119,8 +113,29 @@ class PaymentSumView(APIView):
         query_data.filter_user(self.request.user)
         filtered_data = query_data.queryset
 
-        print(queryset)
-        serializer = PaymentSumSerializer(filtered_data, many=True)
+        accounts = Payment.objects.all().filter(user=self.request.user)
+        res = []
+        for account in accounts:
+            response = {}
+            payment_target_sum_filtered = filtered_data \
+                .filter(payment_target=account) \
+                .aggregate(Sum('amount'))['amount__sum']
+
+            payment_source_sum = filtered_data \
+                .filter(payment_source=account) \
+                .aggregate(Sum('amount'))['amount__sum']
+
+            if payment_source_sum is None:
+                payment_source_sum = 0
+
+            if payment_target_sum is None:
+                payment_target_sum = 0
+
+            response['name'] = account.payment
+            response['sum'] = float(payment_target_sum) - \
+                float(payment_source_sum)
+            res.append(response)
+        serializer = PaymentSumSerializer(res, many=True)
         return Response(serializer.data)
 
 
@@ -179,9 +194,7 @@ class QueryData:
 
         key = 'from_date'
         if self.has_key(key):
-            print(True)
             date = self.query_params[key]
-            print(date)
             queryset = self.queryset.filter(transaction_date__gte=date)
             self.queryset = queryset
 
@@ -194,4 +207,4 @@ class QueryData:
             self.queryset = queryset
 
     def filter_user(self, user):
-        self.queryset = self.queryset.filter(user=user)
+        self.queryset = self.queryset.filter(user=user.id)
