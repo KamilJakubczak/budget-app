@@ -52,6 +52,12 @@ class TransactionTypeSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     """Serializer for Transaction object"""
 
+    category = CategorySerializer(many=False, read_only=True)
+    tag = TagSerializer(many=False, read_only=True)
+    transaction_type = TransactionTypeSerializer(many=False, read_only=True)
+    payment_target = PaymentSerializer(many=False, read_only=True)
+    payment_source = PaymentSerializer(many=False, read_only=True)
+
     class Meta:
         model = Transaction
         fields = '__all__'

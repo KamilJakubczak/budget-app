@@ -1,1 +1,2 @@
 export const GET_ACCOUNTS = "GET_ACCOUNTS";
+export const GET_TRANSACTIONS = "GET_TRANSACTIONS";

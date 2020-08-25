@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Header from "./layout/Header";
 import Accounts from "./accounts/accounts";
+import Transactions from "./transactions/transaction";
 
 import { Provider } from "react-redux";
 import store from "../store";
@@ -22,6 +23,7 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route exact path="/accounts" component={Accounts} />
+                <Route exact path="/transactions" component={Transactions} />
               </Switch>
             </div>
           </Fragment>
