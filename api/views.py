@@ -117,7 +117,7 @@ class PaymentSumView(APIView):
         res = []
         for account in accounts:
             response = {}
-            payment_target_sum_filtered = filtered_data \
+            payment_target_sum = filtered_data \
                 .filter(payment_target=account) \
                 .aggregate(Sum('amount'))['amount__sum']
 
