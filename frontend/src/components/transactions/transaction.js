@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getTransactions } from "../../actions/transactions";
 import Accounts from "../accounts/accounts";
+import Form from "./Form";
 
 export class Transactions extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ export class Transactions extends Component {
     return (
       <Fragment>
         <Accounts />
+        <Form />
         <h2>Transactions:</h2>
         <table className="table table-striped table-hover">
           <thead>

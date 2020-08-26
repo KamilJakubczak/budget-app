@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import CategorySerializer, TagSerializer
 from .serializers import PaymentSerializer, TransactionSerializer
-from .serializers import TransactionTypeSerializer, PaymentInitialSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer
+from .serializers import TransactionTypeSerializer, PaymentInitialSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer, TransactionReadSerializer
 from .models import Category, Tag, Transaction
 from .models import Payment, TransactionType, PaymentInitial
 
@@ -25,6 +25,8 @@ class BaseViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
+
+        print(self.request.user)
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
@@ -85,11 +87,17 @@ class TransactionTypeViewSet(BaseViewSet):
 
 class TransactionViewSet(BaseViewSet):
 
-    serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
 
-    def get_queryset(self):
+    def create(self, request):
+        print(self.request.user)
 
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return TransactionReadSerializer
+        return TransactionSerializer
+
+    def get_queryset(self):
         queryset = super().get_queryset()
         query_params = self.request.query_params
 

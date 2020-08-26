@@ -9,6 +9,7 @@ app_name = 'api'
 router = DefaultRouter()
 router.register('categories', apiView.CategoryViewSet)
 router.register('tags', apiView.TagViewSet)
+router.register('transaction-types', apiView.TransactionTypeViewSet)
 router.register('payment', apiView.PaymentViewSet)
 router.register('payment-initial', apiView.PaymentInitialViewSet)
 router.register('transactions', apiView.TransactionViewSet)
