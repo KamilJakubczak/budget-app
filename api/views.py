@@ -89,9 +89,6 @@ class TransactionViewSet(BaseViewSet):
 
     queryset = Transaction.objects.all()
 
-    def create(self, request):
-        print(self.request.user)
-
     def get_serializer_class(self):
         if self.request.method in ['GET']:
             return TransactionReadSerializer

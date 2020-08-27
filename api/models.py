@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 
 # Create your models here
@@ -129,7 +130,8 @@ class PaymentInitial(models.Model):
 class Transaction(models.Model):
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
+        related_name='transactions',
         on_delete=models.CASCADE)
 
     transaction_date = models.DateField(
