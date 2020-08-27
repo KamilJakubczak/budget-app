@@ -6,6 +6,7 @@ import { getTypes } from "../../actions/transaction_types";
 import { getCategories } from "../../actions/categories";
 import { getTags } from "../../actions/tags";
 import { getPayments } from "../../actions/payments";
+import { getAccounts } from "../../actions/accounts";
 
 export class Form extends Component {
   state = {
@@ -29,6 +30,7 @@ export class Form extends Component {
     getCategories: PropTypes.func.isRequired,
     getTags: PropTypes.func.isRequired,
     getPayments: PropTypes.func.isRequired,
+    getAccounts: PropTypes.func.isRequired,
   };
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -58,6 +60,7 @@ export class Form extends Component {
     };
     console.log(transaction);
     this.props.addTransaction(transaction);
+    this.props.getAccounts();
     this.setState({
       transaction_date: "",
       transaction_type: "",
@@ -74,6 +77,7 @@ export class Form extends Component {
     this.props.getCategories();
     this.props.getTags();
     this.props.getPayments();
+    this.props.getAccounts();
   }
 
   render() {
@@ -89,138 +93,149 @@ export class Form extends Component {
     } = this.state;
     return (
       <div className=" card card-body mt-4 mb-4">
-        <h2>Add transaction</h2>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Date</label>
-            <input
-              className="form-control"
-              type="date"
-              name="transaction_date"
-              onChange={this.onChange}
-              value={transaction_date}
-            />
-          </div>
+        <h2>
+          <a
+            className="btn btn-primary"
+            data-toggle="collapse"
+            href="#collapseTransactions"
+            role="button"
+          >
+            Add transaction
+          </a>
+        </h2>
+        <div className="collapse" id="collapseTransactions">
+          <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+              <label>Date</label>
+              <input
+                className="form-control"
+                type="date"
+                name="transaction_date"
+                onChange={this.onChange}
+                value={transaction_date}
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Transaction type</label>
-            <select
-              className="form-control"
-              type="text"
-              name="transaction_type"
-              onChange={this.onChange}
-              value={transaction_type}
-            >
-              {this.props.types.map((transaction_type) => (
-                <option key={transaction_type.id} value={transaction_type.id}>
-                  {transaction_type.transaction_type}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Transaction type</label>
+              <select
+                className="form-control"
+                type="text"
+                name="transaction_type"
+                onChange={this.onChange}
+                value={transaction_type}
+              >
+                {this.props.types.map((transaction_type) => (
+                  <option key={transaction_type.id} value={transaction_type.id}>
+                    {transaction_type.transaction_type}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Category</label>
-            <select
-              className="form-control"
-              type="text"
-              name="category"
-              onChange={this.onChange}
-              value={category}
-            >
-              {this.props.categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                className="form-control"
+                type="text"
+                name="category"
+                onChange={this.onChange}
+                value={category}
+              >
+                {this.props.categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Tag</label>
-            <select
-              className="form-control"
-              type="text"
-              name="tag"
-              onChange={this.onChange}
-              value={tag}
-            >
-              {this.props.tags.map((tag) => (
-                <option key={tag.id} value={tag.id}>
-                  {tag.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Tag</label>
+              <select
+                className="form-control"
+                type="text"
+                name="tag"
+                onChange={this.onChange}
+                value={tag}
+              >
+                {this.props.tags.map((tag) => (
+                  <option key={tag.id} value={tag.id}>
+                    {tag.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Description</label>
-            <input
-              className="form-control"
-              type="text"
-              name="description"
-              onChange={this.onChange}
-              value={description}
-            />
-          </div>
+            <div className="form-group">
+              <label>Description</label>
+              <input
+                className="form-control"
+                type="text"
+                name="description"
+                onChange={this.onChange}
+                value={description}
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Amount</label>
-            <input
-              className="form-control"
-              type="number"
-              name="amount"
-              onChange={this.onChange}
-              value={amount}
-            />
-          </div>
+            <div className="form-group">
+              <label>Amount</label>
+              <input
+                className="form-control"
+                type="number"
+                name="amount"
+                onChange={this.onChange}
+                value={amount}
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Payment target</label>
-            <select
-              className="form-control"
-              type="text"
-              name="payment_target"
-              onChange={this.onChange}
-              value={payment_target}
-            >
-              {this.props.payments.map((payment_target) => (
-                <option key={payment_target.id} value={payment_target.id}>
-                  {payment_target.payment}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Payment target</label>
+              <select
+                className="form-control"
+                type="text"
+                name="payment_target"
+                onChange={this.onChange}
+                value={payment_target}
+              >
+                {this.props.payments.map((payment_target) => (
+                  <option key={payment_target.id} value={payment_target.id}>
+                    {payment_target.payment}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Payment source</label>
-            <select
-              className="form-control"
-              type="text"
-              name="payment_source"
-              onChange={this.onChange}
-              value={payment_source.id}
-              placeholder="Payment source"
-            >
-              {/* <option selected disabled>
+            <div className="form-group">
+              <label>Payment source</label>
+              <select
+                className="form-control"
+                type="text"
+                name="payment_source"
+                onChange={this.onChange}
+                value={payment_source.id}
+                placeholder="Payment source"
+              >
+                {/* <option selected disabled>
                 {" "}
                 Payment source
               </option> */}
-              {this.props.payments.map((payment_source) => (
-                <option key={payment_source.id} value={payment_source.id}>
-                  {payment_source.payment}
-                </option>
-              ))}
-            </select>
-          </div>
+                {this.props.payments.map((payment_source) => (
+                  <option key={payment_source.id} value={payment_source.id}>
+                    {payment_source.payment}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-          {/*  */}
-        </form>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+            {/*  */}
+          </form>
+        </div>
       </div>
     );
   }
@@ -231,6 +246,7 @@ const mapStateToProps = (state) => ({
   categories: state.categories.categories,
   tags: state.tags.tags,
   payments: state.payments.payments,
+  accounts: state.accounts.accounts,
 });
 export default connect(mapStateToProps, {
   addTransaction,
@@ -238,4 +254,5 @@ export default connect(mapStateToProps, {
   getCategories,
   getTags,
   getPayments,
+  getAccounts,
 })(Form);
