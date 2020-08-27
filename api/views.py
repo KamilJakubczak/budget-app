@@ -25,8 +25,6 @@ class BaseViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-
-        print(self.request.user)
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
@@ -85,7 +83,7 @@ class TransactionTypeViewSet(BaseViewSet):
     queryset = TransactionType.objects.all()
 
 
-class TransactionViewSet(BaseViewSet):
+class TransactionViewSet(BaseViewSet, mixins.RetrieveModelMixin):
 
     queryset = Transaction.objects.all()
 

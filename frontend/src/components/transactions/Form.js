@@ -31,15 +31,13 @@ export class Form extends Component {
     getPayments: PropTypes.func.isRequired,
   };
   onChange = (e) => {
-    console.log(e.target.name, e.target.value);
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state);
   };
   onSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const {
       transaction_date,
-      type,
+      transaction_type,
       category,
       tag,
       description,
@@ -47,9 +45,10 @@ export class Form extends Component {
       payment_target,
       payment_source,
     } = this.state;
+
     const transaction = {
       transaction_date,
-      type,
+      transaction_type,
       category,
       tag,
       description,
@@ -61,7 +60,7 @@ export class Form extends Component {
     this.props.addTransaction(transaction);
     this.setState({
       transaction_date: "",
-      type: "",
+      transaction_type: "",
       category: "",
       tag: "",
       description: "",
@@ -80,7 +79,7 @@ export class Form extends Component {
   render() {
     const {
       transaction_date,
-      type,
+      transaction_type,
       category,
       tag,
       description,
@@ -104,17 +103,17 @@ export class Form extends Component {
           </div>
 
           <div className="form-group">
-            <label>Type</label>
+            <label>Transaction type</label>
             <select
               className="form-control"
               type="text"
-              name="type"
+              name="transaction_type"
               onChange={this.onChange}
-              value={type}
+              value={transaction_type}
             >
-              {this.props.types.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.transaction_type}
+              {this.props.types.map((transaction_type) => (
+                <option key={transaction_type.id} value={transaction_type.id}>
+                  {transaction_type.transaction_type}
                 </option>
               ))}
             </select>

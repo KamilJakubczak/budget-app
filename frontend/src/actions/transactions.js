@@ -14,7 +14,8 @@ export const getTransactions = () => (dispatch) => {
     .catch((err) => console.log(res));
 };
 
-export const addTransaction = (transaction) => (dispatch, getState) => {
+export const addTransaction = (transaction) => (dispatch) => {
+  // transaction.preventDefault();
   axios
     .post("/api/transactions/", transaction)
     .then((res) => {

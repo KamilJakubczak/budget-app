@@ -39,20 +39,20 @@ export class Transactions extends Component {
               <tr key={transaction.id}>
                 <td scope="row">{transaction.id}</td>
                 <td>{transaction.transaction_date}</td>
-                <td>{transaction.transaction_type.transaction_type}</td>
-                <td>{transaction.category.name}</td>
-                <td>{transaction.tag ? transaction.tag.name : "-"}</td>
+                <td>{transaction.transaction_type}</td>
+                <td>{transaction.category}</td>
+                <td>{transaction.tag ? transaction.tag : "-"}</td>
                 <td>{transaction.description}</td>
                 <td>{transaction.amount}</td>
 
                 <td>
                   {transaction.payment_target
-                    ? transaction.payment_target.payment
+                    ? transaction.payment_target
                     : "-"}
                 </td>
                 <td>
                   {transaction.payment_source
-                    ? transaction.payment_source.payment
+                    ? transaction.payment_source
                     : "-"}
                 </td>
               </tr>
