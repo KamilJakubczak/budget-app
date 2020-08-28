@@ -25,6 +25,7 @@ SECRETS = {
     'DB_NAME': None,
     'DB_USER': None,
     'DB_HOST': None,
+    'DB_PORT': None,
 }
 
 # Set environment variables for Travis Cl tests
@@ -99,7 +100,7 @@ DATABASES = {
         'USER': SECRETS['DB_USER'],
         'PASSWORD': SECRETS['DB_PASS'],
         'HOST': SECRETS['DB_HOST'],
-        'PORT': 5432,
+        'PORT': SECRETS['DB_PORT'],
     }
 }
 
