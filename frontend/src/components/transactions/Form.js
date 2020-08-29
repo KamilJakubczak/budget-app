@@ -58,7 +58,6 @@ export class Form extends Component {
       payment_target,
       payment_source,
     };
-    console.log(transaction);
     this.props.addTransaction(transaction);
     this.props.getAccounts();
     this.setState({

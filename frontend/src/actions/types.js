@@ -1,3 +1,4 @@
+// Accounts
 export const GET_ACCOUNTS = "GET_ACCOUNTS";
 
 // Transactions
@@ -15,3 +16,10 @@ export const GET_TAGS = "GET_TAGS";
 
 // Payments
 export const GET_PAYMENTS = "GET_PAYMENTS";
+
+// Errors
+export const GET_ERRORS = "GET_ERRORS";
+
+// Mesages
+export const GET_MESSAGES = "GET_MESSAGES";
+export const CREATE_MESSAGE = "CREATE_MESSAGE";

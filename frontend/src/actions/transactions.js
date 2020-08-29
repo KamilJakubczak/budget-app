@@ -1,5 +1,6 @@
 import axios from "axios";
-import { GET_TRANSACTIONS, ADD_TRANSACTION } from "./types";
+import { GET_TRANSACTIONS, ADD_TRANSACTION, GET_ERRORS } from "./types";
+import { createMessage } from "./messages"
 
 //Get account
 export const getTransactions = () => (dispatch) => {
@@ -19,10 +20,22 @@ export const addTransaction = (transaction) => (dispatch) => {
   axios
     .post("/api/transactions/", transaction)
     .then((res) => {
+      dispatch(createMessage({
+        transactionAdded: 'Transaction added'
+      }))
       dispatch({
         type: ADD_TRANSACTION,
         payload: res.data,
       });
     })
-    .catch((err) => console.log(res));
+    .catch((err) => {
+      const errors = {
+        msg: err.response.data,
+        status: err.response.status,
+      }
+      dispatch({
+        type: GET_ERRORS,
+        payload: errors
+      })
+    });
 };

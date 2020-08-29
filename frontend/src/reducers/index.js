@@ -5,6 +5,8 @@ import types from "./types";
 import categories from "./categories";
 import tags from "./tags";
 import payments from "./payments";
+import errors from "./errors";
+import messages from "./messages"
 
 export default combineReducers({
   accounts,
@@ -13,4 +15,6 @@ export default combineReducers({
   categories,
   tags,
   payments,
+  errors,
+  messages,
 });
