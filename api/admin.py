@@ -1,21 +1,12 @@
 from django.contrib import admin
 from .models import Category, Tag, Payment
-from .models import Transaction, TransactionType, PaymentInitial
+from .models import Transaction, TransactionType
 import datetime
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Payment)
 admin.site.register(TransactionType)
-
-
-@admin.register(PaymentInitial)
-class PaymentIntialAdmin(admin.ModelAdmin):
-    list_display = (
-        'user',
-        'payment',
-        'amount'
-    )
 
 
 @admin.register(Transaction)

@@ -33,10 +33,6 @@ class Payment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
-    initial_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2)
-
     def __str__(self):
         return self.payment
 
@@ -104,27 +100,6 @@ class Category(models.Model):
 
     def create_string(self, name, category_object):
         return category_object.name + ' - ' + name
-
-
-class PaymentInitial(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
-
-    payment = models.ForeignKey(
-        Payment,
-        on_delete=models.CASCADE,
-        related_name='payment_initial'
-    )
-
-    amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=False,
-        blank=False)
-
-    class Meta:
-        unique_together = ('user', 'payment')
 
 
 class Transaction(models.Model):

@@ -4,6 +4,7 @@ export const GET_ACCOUNTS = "GET_ACCOUNTS";
 // Transactions
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS";
 export const ADD_TRANSACTION = "ADD_TRANSACTION";
+export const DELETE_TRANSACTION = "DELETE_TRANSACTION";
 
 // Types
 export const GET_TYPES = "GET_TYPES";

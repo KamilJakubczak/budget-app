@@ -12,7 +12,7 @@ export class Form extends Component {
   state = {
     transaction_date: "",
     type: "",
-    category: "",
+    category: "test",
     tag: "",
     description: "",
     amount: "",
@@ -33,10 +33,12 @@ export class Form extends Component {
     getAccounts: PropTypes.func.isRequired,
   };
   onChange = (e) => {
+    console.log(e.target.name);
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = (e) => {
     e.preventDefault();
+
     const {
       transaction_date,
       transaction_type,
@@ -48,6 +50,8 @@ export class Form extends Component {
       payment_source,
     } = this.state;
 
+    console.log(this.state);
+
     const transaction = {
       transaction_date,
       transaction_type,
@@ -58,8 +62,10 @@ export class Form extends Component {
       payment_target,
       payment_source,
     };
+
     this.props.addTransaction(transaction);
     this.props.getAccounts();
+
     this.setState({
       transaction_date: "",
       transaction_type: "",
@@ -71,6 +77,7 @@ export class Form extends Component {
       payment_source: "",
     });
   };
+
   componentDidMount() {
     this.props.getTypes();
     this.props.getCategories();
@@ -90,6 +97,7 @@ export class Form extends Component {
       payment_target,
       payment_source,
     } = this.state;
+
     return (
       <div className=" card card-body mt-4 mb-4">
         <h2>
@@ -104,6 +112,7 @@ export class Form extends Component {
         </h2>
         <div className="collapse" id="collapseTransactions">
           <form onSubmit={this.onSubmit}>
+            {/* Date */}
             <div className="form-group">
               <label>Date</label>
               <input
@@ -115,6 +124,7 @@ export class Form extends Component {
               />
             </div>
 
+            {/* Transactin type */}
             <div className="form-group">
               <label>Transaction type</label>
               <select
@@ -132,6 +142,7 @@ export class Form extends Component {
               </select>
             </div>
 
+            {/* Category */}
             <div className="form-group">
               <label>Category</label>
               <select
@@ -149,6 +160,7 @@ export class Form extends Component {
               </select>
             </div>
 
+            {/* Tag */}
             <div className="form-group">
               <label>Tag</label>
               <select
@@ -166,6 +178,7 @@ export class Form extends Component {
               </select>
             </div>
 
+            {/* Desription */}
             <div className="form-group">
               <label>Description</label>
               <input
@@ -215,10 +228,6 @@ export class Form extends Component {
                 value={payment_source.id}
                 placeholder="Payment source"
               >
-                {/* <option selected disabled>
-                {" "}
-                Payment source
-              </option> */}
                 {this.props.payments.map((payment_source) => (
                   <option key={payment_source.id} value={payment_source.id}>
                     {payment_source.payment}
@@ -247,6 +256,7 @@ const mapStateToProps = (state) => ({
   payments: state.payments.payments,
   accounts: state.accounts.accounts,
 });
+
 export default connect(mapStateToProps, {
   addTransaction,
   getTypes,

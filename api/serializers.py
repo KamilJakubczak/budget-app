@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Category, Tag, Transaction
-from .models import Payment, TransactionType, PaymentInitial
+from .models import Payment, TransactionType
 
 
 class RelatedFieldAlternative(serializers.PrimaryKeyRelatedField):

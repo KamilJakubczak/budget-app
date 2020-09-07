@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getTransactions } from "../../actions/transactions";
+import { getTransactions, deleteTransaction } from "../../actions/transactions";
 import Accounts from "../accounts/accounts";
 import Form from "./Form";
 
@@ -10,6 +10,7 @@ export class Transactions extends Component {
   static propTypes = {
     transactions: PropTypes.array.isRequired,
     getTransactions: PropTypes.func.isRequired,
+    deleteTransaction: PropTypes.func.isRequired,
   };
   componentDidMount() {
     this.props.getTransactions();
@@ -32,6 +33,7 @@ export class Transactions extends Component {
               <th>Amount</th>
               <th>Target</th>
               <th>Source</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -55,6 +57,12 @@ export class Transactions extends Component {
                     ? transaction.payment_source
                     : "-"}
                 </td>
+                <td>
+                  <button
+                    onClick={this.props.deleteTransaction.bind(this, transaction.id)}
+                    className="btn btn-danger btn-sm"
+                  >Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -67,4 +75,4 @@ export class Transactions extends Component {
 const mapStateToProps = (state) => ({
   transactions: state.transactions.transactions,
 });
-export default connect(mapStateToProps, { getTransactions })(Transactions);
+export default connect(mapStateToProps, { getTransactions, deleteTransaction })(Transactions);

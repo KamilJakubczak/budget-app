@@ -4,20 +4,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
 from .serializers import CategorySerializer, TagSerializer
+
 from .serializers import PaymentSerializer, TransactionSerializer
-from .serializers import TransactionTypeSerializer, PaymentInitialSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer, TransactionReadSerializer
+from .serializers import TransactionTypeSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer, TransactionReadSerializer
 from .models import Category, Tag, Transaction
-from .models import Payment, TransactionType, PaymentInitial
+from .models import Payment, TransactionType
 
 from django.db.models import Sum, F, DecimalField
 from decimal import Decimal
+# class BaseViewSet(viewsets.GenericViewSet,
+#                   mixins.ListModelMixin,
+#                   mixins.CreateModelMixin):
 
 
-class BaseViewSet(viewsets.GenericViewSet,
-                  mixins.ListModelMixin,
-                  mixins.CreateModelMixin):
+class BaseViewSet(viewsets.ModelViewSet):
     """
     A simple base viewset for creating and editing
     """
@@ -68,11 +69,6 @@ class PaymentViewSet(BaseViewSet):
     queryset = Payment.objects.all()
 
 
-class PaymentInitialViewSet(BaseViewSet):
-    serializer_class = PaymentInitialSerializer
-    queryset = PaymentInitial.objects.all()
-
-
 class TransactionTypeViewSet(BaseViewSet):
     """
     A simple viewset for creating and editing transaction types
@@ -83,7 +79,9 @@ class TransactionTypeViewSet(BaseViewSet):
     queryset = TransactionType.objects.all()
 
 
-class TransactionViewSet(BaseViewSet, mixins.RetrieveModelMixin):
+class TransactionViewSet(
+    BaseViewSet,
+):
 
     queryset = Transaction.objects.all()
 
