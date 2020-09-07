@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from "react";
+import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
-import {Provider as AlertProvider} from "react-alert";
+import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from "./layout/Alerts";
 import {
@@ -9,33 +9,42 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import Container from "@material-ui/core/Container";
+
 import Header from "./layout/Header";
 import Accounts from "./accounts/accounts";
 import Transactions from "./transactions/transaction";
 
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import store from "../store";
 
 //Alert options
 const alertOptions = {
   timeout: 3000,
-  position: 'top center'
-}
+  position: "top center",
+};
 
 class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>
           <Router>
             <Fragment>
-              <Header/>
-              <Alerts/>
-              <div className="container">
-                <Switch>
-                  <Route exact path="/accounts" component={Accounts}/>
-                  <Route exact path="/transactions" component={Transactions}/>
-                </Switch>
+              <Header />
+              <Alerts />
+              <div style={{ marginTop: "30px" }}>
+                <Container>
+                  <Switch>
+                    <Route exact path="/accounts" component={Accounts} />
+                    <Route
+                      exact
+                      path="/transactions"
+                      component={Transactions}
+                    />
+                  </Switch>
+                </Container>
               </div>
             </Fragment>
           </Router>
@@ -45,4 +54,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App/>, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById("app"));

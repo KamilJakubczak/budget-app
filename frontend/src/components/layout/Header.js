@@ -1,49 +1,50 @@
 import React, { Component } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
-export class Header extends Component {
-  render() {
-    return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a className="navbar-brand" href="#">
-          Budget
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarColor01"
-          aria-controls="navbarColor01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
 
-        <div
-          className="collapse navbar-collapse justyfy-content-end "
-          id="navbarColor01"
-        >
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="#/transactions">
-                Transactions
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#/accounts">
-                Accounts
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Planning
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    );
-  }
+export default function Header() {
+  const classes = useStyles();
+  const preventDefault = (event) => event.preventDefault();
+  const onClick = () => {};
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            <Button color="inherit" href="#">
+              Budget App
+            </Button>
+          </Typography>
+          <Button color="inherit" href="#/transactions">
+            Transactions
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 }
-
-export default Header;
