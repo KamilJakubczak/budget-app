@@ -1,21 +1,18 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import CategorySerializer, TagSerializer
 
 from .serializers import PaymentSerializer, TransactionSerializer
-from .serializers import TransactionTypeSerializer, PaymentSumSerializer, CategorySumSerializer, TagSumSerializer, TransactionReadSerializer
+from .serializers import TransactionTypeSerializer
+from .serializers import PaymentSumSerializer, CategorySumSerializer
+from .serializers import TagSumSerializer, TransactionReadSerializer
 from .models import Category, Tag, Transaction
 from .models import Payment, TransactionType
 
-from django.db.models import Sum, F, DecimalField
-from decimal import Decimal
-# class BaseViewSet(viewsets.GenericViewSet,
-#                   mixins.ListModelMixin,
-#                   mixins.CreateModelMixin):
+from django.db.models import Sum
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -186,7 +183,7 @@ class QueryData:
         self.filter_from()
         self.filter_to()
 
-    def has_key(self, key):
+    def __has_key(self, key):
         if key in self.query_params.keys():
             return True
         return False
@@ -194,7 +191,7 @@ class QueryData:
     def filter_from(self):
 
         key = 'from_date'
-        if self.has_key(key):
+        if self.__has_key(key):
             date = self.query_params[key]
             queryset = self.queryset.filter(transaction_date__gte=date)
             self.queryset = queryset
@@ -202,7 +199,7 @@ class QueryData:
     def filter_to(self):
 
         key = 'to_date'
-        if self.has_key(key):
+        if self.__has_key(key):
             date = self.query_params[key]
             queryset = self.queryset.filter(transaction_date__lte=date)
             self.queryset = queryset

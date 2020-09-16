@@ -23,39 +23,38 @@ class PublicTestCase(TestCase):
         """
         Tests if login is required for retriving categorys
         """
-
         res = self.client.get(category_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class ModelTests(TestCase):
+# class ModelTests(TestCase):
 
-    def setUp(self):
+#     def setUp(self):
 
-        self.user = get_user_model().objects.create_user(
-            'testuser',
-            'supertest'
-        )
-        self.client = APIClient()
+#         self.user = get_user_model().objects.create_user(
+#             'testuser',
+#             'supertest'
+#         )
+#         self.client = APIClient()
 
-    def test_retrieve_recursd_category_name(self):
-        category1 = Category.objects.create(name='category1',
-                                  user=self.user)
+#     def test_retrieve_recursd_category_name(self):
+#         category1 = Category.objects.create(name='category1',
+#                                   user=self.user)
 
-        category2 = Category.objects.create(name='category2',
-                                  user=self.user,
-                                  parent_category=category1)
+#         category2 = Category.objects.create(name='category2',
+#                                   user=self.user,
+#                                   parent_category=category1)
 
-        category3 = Category.objects.create(name='category3',
-                                  user=self.user,
-                                  parent_category=category2)
+#         category3 = Category.objects.create(name='category3',
+#                                   user=self.user,
+#                                   parent_category=category2)
 
-        expected1 = 'category1'
-        self.assertEqual(category1.__str__(), expected1)
+#         expected1 = 'category1'
+#         self.assertEqual(category1.__str__(), expected1)
 
-        expected2 = 'category1 - category2'
-        self.assertEqual(category2.__str__(), expected2)
+#         expected2 = 'category1 - category2'
+#         self.assertEqual(category2.__str__(), expected2)
 
-        expected3 = 'category1 - category2 - category3'
-        self.assertEqual(category3.__str__(), expected3)
+#         expected3 = 'category1 - category2 - category3'
+#         self.assertEqual(category3.__str__(), expected3)
