@@ -55,7 +55,7 @@ class ModelTests(TestCase):
 
     def test_login_required_ok(self):
         """
-        Test retriving transaction type for logged in user
+        Test getting transaction tags for logged in users
         """
 
         TransactionType.objects.create(
@@ -67,6 +67,9 @@ class ModelTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_getting_all_transaction_types(self):
+        """
+        Test getting all transaction types
+        """
 
         TransactionType.objects.create(
             user=self.user,
@@ -82,6 +85,9 @@ class ModelTests(TestCase):
         self.assertEqual(res.data[1]['transaction_type'], 'test2')
 
     def test_getting_single_transaction_type(self):
+        """
+        Testing getting single transaction
+        """
 
         sample_transaction_type(self.user)
         type2 = sample_transaction_type(
@@ -93,3 +99,20 @@ class ModelTests(TestCase):
 
         self.assertFalse(isinstance(res.data, list))
         self.assertEqual(res.data['transaction_type'], 'cash')
+
+    def test_getting_transaction_types_assined_to_user(self):
+        """
+        Test filtering the transaction types, for logged user
+        """
+
+        self.user2 = get_user_model().objects.create_user(
+            'testuser2',
+            'supertest'
+        )
+
+        sample_transaction_type(self.user, transaction_type='cash')
+        sample_transaction_type(self.user2, transaction_type='account')
+
+        res = self.client.get(transaction_types_URL)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['transaction_type'], 'cash')
