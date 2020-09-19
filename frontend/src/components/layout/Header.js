@@ -25,12 +25,12 @@ export class Header extends Component {
         >
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="#/transactions">
                 Transactions
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="#/accounts">
                 Accounts
               </a>
             </li>

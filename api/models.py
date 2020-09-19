@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 
 # Create your models here
@@ -31,10 +32,6 @@ class Payment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
-
-    initial_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2)
 
     def __str__(self):
         return self.payment
@@ -105,31 +102,11 @@ class Category(models.Model):
         return category_object.name + ' - ' + name
 
 
-class PaymentInitial(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
-
-    payment = models.ForeignKey(
-        Payment,
-        on_delete=models.CASCADE,
-        related_name='payment_initial'
-    )
-
-    amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=False,
-        blank=False)
-
-    class Meta:
-        unique_together = ('user', 'payment')
-
-
 class Transaction(models.Model):
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
+        related_name='transactions',
         on_delete=models.CASCADE)
 
     transaction_date = models.DateField(
