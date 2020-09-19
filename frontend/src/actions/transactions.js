@@ -5,7 +5,7 @@ import {
   GET_ERRORS,
   DELETE_TRANSACTION,
 } from "./types";
-import { createMessage } from "./messages";
+import { createMessage, returnErrors } from "./messages";
 
 //Get account
 export const getTransactions = () => (dispatch) => {
@@ -17,7 +17,9 @@ export const getTransactions = () => (dispatch) => {
         payload: res.data,
       });
     })
-    .catch((err) => console.log(res));
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const addTransaction = (transaction) => (dispatch) => {
@@ -34,16 +36,9 @@ export const addTransaction = (transaction) => (dispatch) => {
         payload: res.data,
       });
     })
-    .catch((err) => {
-      const errors = {
-        msg: err.response.data,
-        status: err.response.status,
-      };
-      dispatch({
-        type: GET_ERRORS,
-        payload: errors,
-      });
-    });
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const deleteTransaction = (id) => (dispatch) => {
