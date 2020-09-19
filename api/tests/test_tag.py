@@ -122,3 +122,11 @@ class PrivateTestCase(TestCase):
         res = self.client.get(TAG_URL)
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], 'food')
+
+    def test_str_representation(self):
+
+        tag = sample_tag(user=self.user)
+        self.assertEqual(
+            tag.__str__(), self.user.username
+            + ' - '
+            + tag.name)
