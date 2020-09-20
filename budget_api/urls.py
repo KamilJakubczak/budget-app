@@ -20,6 +20,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include('frontend.urls')),
+    path('', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]
