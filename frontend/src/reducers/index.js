@@ -6,7 +6,8 @@ import categories from "./categories";
 import tags from "./tags";
 import payments from "./payments";
 import errors from "./errors";
-import messages from "./messages"
+import messages from "./messages";
+import auth from "./auth";
 
 export default combineReducers({
   accounts,
@@ -17,4 +18,5 @@ export default combineReducers({
   payments,
   errors,
   messages,
+  auth,
 });
