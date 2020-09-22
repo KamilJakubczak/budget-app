@@ -6,11 +6,12 @@ import {
   DELETE_TRANSACTION,
 } from "./types";
 import { createMessage, returnErrors } from "./messages";
+import { tokenConfig } from "./auth";
 
 //Get account
-export const getTransactions = () => (dispatch) => {
+export const getTransactions = () => (dispatch, getState) => {
   axios
-    .get("/api/transactions")
+    .get("/api/transactions", tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_TRANSACTIONS,
@@ -22,9 +23,9 @@ export const getTransactions = () => (dispatch) => {
     );
 };
 
-export const addTransaction = (transaction) => (dispatch) => {
+export const addTransaction = (transaction) => (dispatch, getState) => {
   axios
-    .post("/api/transactions/", transaction)
+    .post("/api/transactions/", transaction, tokenConfig(getState))
     .then((res) => {
       dispatch(
         createMessage({
@@ -41,9 +42,9 @@ export const addTransaction = (transaction) => (dispatch) => {
     );
 };
 
-export const deleteTransaction = (id) => (dispatch) => {
+export const deleteTransaction = (id) => (dispatch, getState) => {
   axios
-    .delete(`/api/transactions/${id}/`)
+    .delete(`/api/transactions/${id}/`, tokenConfig(getState))
     .then((res) => {
       dispatch(
         createMessage({

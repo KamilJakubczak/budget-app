@@ -7,7 +7,7 @@ import { REGISTER_SUCCESS, REGISTER_FAIL } from "./types";
 // Check token and load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading
-  dispatch({ type: USER_LOADING });
+  // dispatch({ type: USER_LOADING });
 
   axios
     .get("/api/auth/user", tokenConfig(getState))
@@ -108,7 +108,7 @@ export const tokenConfig = (getState) => {
 
   //If token add to headers config
   if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
+    config.headers["Authorization"] = `token ${token}`;
   }
   return config;
 };

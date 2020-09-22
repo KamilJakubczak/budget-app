@@ -33,7 +33,6 @@ export class Form extends Component {
     getAccounts: PropTypes.func.isRequired,
   };
   onChange = (e) => {
-    console.log(e.target.name);
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = (e) => {
@@ -49,8 +48,6 @@ export class Form extends Component {
       payment_target,
       payment_source,
     } = this.state;
-
-    console.log(this.state);
 
     const transaction = {
       transaction_date,
