@@ -150,3 +150,8 @@ class Transaction(models.Model):
         decimal_places=2,
         null=False,
         blank=False)
+
+    def clean(self):
+        print('clean')
+        if self.payment_target == self.payment_source:
+            raise ValidationError( 'Target and source fields cannot be the same')

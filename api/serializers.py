@@ -135,8 +135,56 @@ class TransactionSerializer(serializers.ModelSerializer):
             'tag': {
                 'required': False
             }
-
         }
+
+    def validate(self, data):
+
+        self.check_if_payment_not_equal(data)
+
+        if self.check_transaction_type(data, 'income'):
+            self.check_income(data)
+
+        if self.check_transaction_type(data, 'expense'):
+            self.check_expense(data)
+
+        return data
+
+    def check_if_payment_not_equal(self, data):
+        """Check if payment source and payment target are different"""
+
+        if data['payment_target'] == data['payment_source']:
+            raise serializers.ValidationError(
+                'Target and source fields cannot be the same')
+
+    def check_transaction_type(self, data, check_type):
+        """
+        Returns true when the transaction is the same as the
+        second parameter
+        """
+
+        if str(data['transaction_type']).lower() == check_type:
+            return True
+        return False
+
+    def check_income(self, data):
+        """
+        Raise exception when payment target is missing
+        for income transaction
+        """
+
+        if not data['payment_target']:
+            raise serializers.ValidationError(
+                'Income transaction requires payment target')
+
+    def check_expense(self, data):
+        """
+        Raise exception when payment source is missing
+        for expense transaction
+        """
+
+        if not data['payment_source']:
+            raise serializers.ValidationError(
+                'Income transaction requires payment source')
 
 
 class TransactionReadSerializer(serializers.ModelSerializer):
