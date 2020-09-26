@@ -19,7 +19,7 @@ class BaseViewSet(viewsets.ModelViewSet):
     """
     A simple base viewset for creating and editing
     """
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
@@ -98,7 +98,7 @@ class TransactionViewSet(
 
 
 class PaymentSumView(APIView):
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get(self, requset):

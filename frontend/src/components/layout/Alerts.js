@@ -10,16 +10,21 @@ export class Alerts extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { error, alert, message} = this.props;
+    const { error, alert, message } = this.props;
 
+    if (error.msg.non_field_errors) {
+      alert.error(error.msg.non_field_errors.join());
+      console.log(error.msg.non_field_errors.join());
+    }
     if (error !== prevProps.error) {
       for (const e in error.msg) {
         alert.error(`${e.replace("_", " ")}`);
       }
     }
 
+    if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
     if (message !== prevProps.message) {
-      alert.success(message.transactionAdded)
+      alert.success(message.transactionAdded);
     }
   }
 
@@ -29,7 +34,7 @@ export class Alerts extends Component {
 }
 const mapStateToProps = (state) => ({
   error: state.errors,
-  message: state.messages
+  message: state.messages,
 });
 
 export default connect(mapStateToProps)(withAlert()(Alerts));
