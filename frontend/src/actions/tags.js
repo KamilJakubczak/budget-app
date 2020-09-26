@@ -5,7 +5,7 @@ import { tokenConfig } from "./auth";
 //Get account
 export const getTags = () => (dispatch, getState) => {
   axios
-    .get("/api/tags", tokenConfig(getState))
+    .get("/api/tags/", tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_TAGS,

@@ -5,7 +5,7 @@ import { tokenConfig } from "./auth";
 //Get account
 export const getAccounts = () => (dispatch, getState) => {
   axios
-    .get("/api/paymentSum", tokenConfig(getState))
+    .get("/api/paymentSum/", tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: GET_ACCOUNTS,
