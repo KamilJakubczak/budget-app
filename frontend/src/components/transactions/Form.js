@@ -11,8 +11,8 @@ import { getAccounts } from "../../actions/accounts";
 export class Form extends Component {
   state = {
     transaction_date: "",
-    type: "",
-    category: "test",
+    transaction_type: "",
+    category: "",
     tag: "",
     description: "",
     amount: "",
@@ -32,9 +32,11 @@ export class Form extends Component {
     getPayments: PropTypes.func.isRequired,
     getAccounts: PropTypes.func.isRequired,
   };
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -81,6 +83,17 @@ export class Form extends Component {
     this.props.getTags();
     this.props.getPayments();
     this.props.getAccounts();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.categories.length !== 0 && this.state.category == "") {
+      this.setState({ category: this.props.categories[0].id });
+    }
+
+    if (this.props.types.length !== 0 && this.state.transaction_type == "") {
+      this.setState({ transaction_type: this.props.types[0].id });
+    }
+    console.log(this.props.categories);
   }
 
   render() {
@@ -138,7 +151,6 @@ export class Form extends Component {
                 ))}
               </select>
             </div>
-
             {/* Category */}
             <div className="form-group">
               <label>Category</label>
@@ -156,7 +168,6 @@ export class Form extends Component {
                 ))}
               </select>
             </div>
-
             {/* Tag */}
             <div className="form-group">
               <label>Tag</label>
@@ -174,7 +185,6 @@ export class Form extends Component {
                 ))}
               </select>
             </div>
-
             {/* Desription */}
             <div className="form-group">
               <label>Description</label>
@@ -186,7 +196,6 @@ export class Form extends Component {
                 value={description}
               />
             </div>
-
             <div className="form-group">
               <label>Amount</label>
               <input
@@ -197,7 +206,6 @@ export class Form extends Component {
                 value={amount}
               />
             </div>
-
             <div className="form-group">
               <label>Payment target</label>
               <select
@@ -214,7 +222,6 @@ export class Form extends Component {
                 ))}
               </select>
             </div>
-
             <div className="form-group">
               <label>Payment source</label>
               <select
@@ -232,7 +239,6 @@ export class Form extends Component {
                 ))}
               </select>
             </div>
-
             <div className="form-group">
               <button type="submit" className="btn btn-primary">
                 Submit
