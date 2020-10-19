@@ -31,4 +31,9 @@ urlpatterns = [
         'tagSum/',
         apiView.TagSumView.as_view(),
         name="tagSum"),
+
+    path(
+        'csv',
+        apiView.show_transactions,
+        name='csv')
 ]

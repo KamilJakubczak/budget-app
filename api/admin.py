@@ -1,11 +1,12 @@
 from django.contrib import admin
 from .models import Category, Tag, Payment
-from .models import Transaction, TransactionType
+from .models import Transaction, TransactionType, BankFiles
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Payment)
 admin.site.register(TransactionType)
+admin.site.register(BankFiles)
 
 
 @admin.register(Transaction)

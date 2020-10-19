@@ -10,9 +10,12 @@ from .serializers import TransactionTypeSerializer
 from .serializers import PaymentSumSerializer, CategorySumSerializer
 from .serializers import TagSumSerializer, TransactionReadSerializer
 from .models import Category, Tag, Transaction
-from .models import Payment, TransactionType
+from .models import Payment, TransactionType, BankFiles
 
 from django.db.models import Sum
+import api.common.read_csv as read_csv
+import json
+import os
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -165,6 +168,28 @@ class TagSumView(APIView):
         filtered_data = query_data.queryset
         serializer = TagSumSerializer(filtered_data, many=True)
         return Response(serializer.data)
+
+
+class BankTransactions(APIView):
+
+    def get(self, request):
+        transactions = read_csv.TransactionList(files.file.path)
+        transactions_list = transactions.transactions
+
+
+def show_transactions(request):
+    import os
+    from .models import BankFiles
+    from django.http import HttpResponse, JsonResponse
+
+    files = BankFiles.objects.get(pk=3)
+
+    #  return HttpResponse(files.file.path)
+
+    transactions = read_csv.TransactionList(files.file.path, read_csv.Line2)
+
+    transactions_list = transactions.transactions
+    return JsonResponse({"data": transactions.get_json()})
 
 
 """

@@ -155,3 +155,7 @@ class Transaction(models.Model):
         print('clean')
         if self.payment_target == self.payment_source:
             raise ValidationError( 'Target and source fields cannot be the same')
+
+class BankFiles(models.Model):
+
+    file = models.FileField(upload_to='uploads/bank/')
