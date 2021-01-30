@@ -34,6 +34,6 @@ urlpatterns = [
 
     path(
         'csv',
-        apiView.show_transactions,
+        apiView.BankTransactions.as_view(),
         name='csv')
 ]

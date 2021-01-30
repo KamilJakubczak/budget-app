@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
     case USER_LOADED:
       return {
         ...state,
-        iaAuthenticated: true,
+        isAuthenticated: true,
         isLoading: false,
         user: action.payload,
       };

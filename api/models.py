@@ -115,7 +115,9 @@ class Transaction(models.Model):
 
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
 
     tag = models.ForeignKey(
         Tag,
@@ -159,3 +161,4 @@ class Transaction(models.Model):
 class BankFiles(models.Model):
 
     file = models.FileField(upload_to='uploads/bank/')
+    added_on = models.DateTimeField(auto_now_add=True)

@@ -94,7 +94,8 @@ class TransactionSerializer(serializers.ModelSerializer):
     category = RelatedFieldAlternative(
         queryset=Category.objects.all(),
         serializer=CategorySerializer,
-        field_name='name'
+        field_name='name',
+        allow_null=True
     )
 
     transaction_type = RelatedFieldAlternative(
@@ -147,6 +148,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         if self.check_transaction_type(data, 'expense'):
             self.check_expense(data)
 
+        self.check_category(data)
         return data
 
     def check_if_payment_not_equal(self, data):
@@ -165,6 +167,19 @@ class TransactionSerializer(serializers.ModelSerializer):
         if str(data['transaction_type']).lower() == check_type:
             return True
         return False
+
+    def check_category(self, data):
+
+        if not data['category'] \
+                and not self.check_transaction_type(data, 'transfer'):
+            raise serializers.ValidationError(
+                'Missing category')
+        print(data, str(data['transaction_type']).lower())
+        if data['category'] \
+                and self.check_transaction_type(data, 'transfer'):
+
+            raise serializers.ValidationError(
+                'Transfer should not have a category')
 
     def check_income(self, data):
         """

@@ -83,7 +83,7 @@ class TransactionViewSet(
     BaseViewSet,
 ):
 
-    queryset = Transaction.objects.all()
+    queryset = Transaction.objects.all().order_by('transaction_date')
 
     def get_serializer_class(self):
         if self.request.method in ['GET']:
@@ -142,8 +142,8 @@ class PaymentSumView(APIView):
 
 class CategorySumView(APIView):
     def get(self, requset):
-
         queryset = Transaction.objects.values(
+
             'category__name').annotate(sum=Sum('amount'))
 
         query_data = QueryData(
@@ -169,10 +169,15 @@ class TagSumView(APIView):
         serializer = TagSumSerializer(filtered_data, many=True)
         return Response(serializer.data)
 
-
 class BankTransactions(APIView):
 
+
     def get(self, request):
+        from django.http import HttpResponse, JsonResponse
+        files = BankFiles.objects.all()
+        file_names = [file.file.name for file in files]
+        return JsonResponse({'data': file_names})
+        return JsonResponse({'response:':files.file.name})
         transactions = read_csv.TransactionList(files.file.path)
         transactions_list = transactions.transactions
 
@@ -183,8 +188,6 @@ def show_transactions(request):
     from django.http import HttpResponse, JsonResponse
 
     files = BankFiles.objects.get(pk=3)
-
-    #  return HttpResponse(files.file.path)
 
     transactions = read_csv.TransactionList(files.file.path, read_csv.Line2)
 

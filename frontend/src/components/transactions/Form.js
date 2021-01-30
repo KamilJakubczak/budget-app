@@ -85,16 +85,37 @@ export class Form extends Component {
     this.props.getAccounts();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.categories.length !== 0 && this.state.category == "") {
-      this.setState({ category: this.props.categories[0].id });
-    }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.props.categories.length !== 0 && this.state.category == "") {
+  //     this.setState({ category: this.props.categories[0].id });
+  //   }
 
-    if (this.props.types.length !== 0 && this.state.transaction_type == "") {
-      this.setState({ transaction_type: this.props.types[0].id });
+  //   if (this.props.types.length !== 0 && this.state.transaction_type == "") {
+  //     this.setState({ transaction_type: this.props.types[0].id });
+  //   }
+  // }
+
+  append_with_dash(){
+
+    const to_change = [
+          'categories',
+          'tags',
+          'types',
+          'payments',
+    ]
+    const dash = {
+      id: null,
+      name: ''
     }
-    console.log(this.props.categories);
-  }
+      for (const field of to_change){
+          console.log(field, this.props[field.toString()])
+          console.log(this.props['categories'])
+        const contains = this.props[field].filter( x => x.name == dash.name )
+        if(contains.length === 0){
+          this.props[field].unshift(dash)
+        }
+      }
+   }
 
   render() {
     const {
@@ -107,6 +128,7 @@ export class Form extends Component {
       payment_target,
       payment_source,
     } = this.state;
+    this.append_with_dash()
 
     return (
       <div className=" card card-body mt-4 mb-4">
